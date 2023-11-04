@@ -5,7 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 class downloadFromUrl {
-    public downloadFromUrl(String url, String fileNameString) {
+    private String url;
+    private String fileName;
+    public void start() {
         try {
             URI uri = new URI(url);
             URL fileLink = uri.toURL();
@@ -13,7 +15,7 @@ class downloadFromUrl {
             InputStream in = fileLink.openStream();
             // FileOutputStream downloadedFile = new FileOutputStream(fileNameString);
             int len;
-            Files.copy(in, Paths.get(fileNameString.toString()));
+            Files.copy(in, Paths.get(fileName.toString()));
             // byte[] bytes = new byte[1024];
             // while ((len = in.read(bytes)) != -1) {
             //     downloadedFile.write(bytes);
@@ -24,8 +26,19 @@ class downloadFromUrl {
         }
      
     }
+    public void setUrl(String urlText) {
+         this.url = urlText;
+         System.out.println(this.fileName);
+    }
+    
+    public void setFileName(String nameOfTheFile) {
+        this.fileName = nameOfTheFile;
+    }
     public static void main(String[] args) {
-        downloadFromUrl app = new downloadFromUrl("https://th.bing.com/th/id/R.48d98b81a5d9a0ab3c99b630183c48aa?rik=NrPHhZ5F0IaKRg&pid=ImgRaw&r=0", "ai.png");
+        downloadFromUrl app = new downloadFromUrl();
+        app.setUrl("https://ia801006.us.archive.org/13/items/OceanofPDF.comTheAlchemist/_OceanofPDF.com_The_Alchemist.pdf");
+        app.setFileName("The Alchemist.pdf");
+        app.start();
     }
     
 }
