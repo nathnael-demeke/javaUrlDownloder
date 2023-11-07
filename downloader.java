@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class downloader implements ActionListener{
+public class downloader implements ActionListener, KeyListener {
     private String url;
     private String fileName;
     JButton downloadButton;
@@ -57,18 +57,20 @@ public class downloader implements ActionListener{
         downloadButton.setBackground(Color.black);
 
         downloadButton.addActionListener(this);
+        
         downloadButton.setForeground(Color.white);
         urlTextField.setText("URL");
         fileDestination.setText("Path");
         
         
        
-        
+        fileDestination.addKeyListener(this);
         window.add(urlTextField);
        
         window.add(statusPanel);
         statusPanel.add(statusText);
         window.add(downloadButton);
+
         window.add(fileDestination);
         statusPanel.setVisible(true);
         window.setSize(500,500);
@@ -129,6 +131,71 @@ public class downloader implements ActionListener{
         // app.setFileName("The Alchemist.pdf");
         app.start();
     }
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+    }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // TODO Auto-generated method stub
+         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+           Thread downloadbuttoneditoThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                downloadButton.setBackground(Color.gray);
+                
+              System.out.println("the system is working");
+            }
+            
+           });
+           downloadbuttoneditoThread.start();
+try {
+            downloadbuttoneditoThread.join();
+
+} catch (Exception e1) {
+    // TODO: handle exception
+    System.out.println(e1.getMessage());
+}        
+               this.url = urlTextField.getText();
+             this.fileName = fileDestination.getText();
+             statusText.setText("hey");
+            
+             try {
+              
+             statusText.setForeground(Color.black);
+                System.out.println("downloading...");
+                
+                URI link = new URI(url);
+                URL linkURL = link.toURL();
+                System.out.println(fileName);
+                InputStream in = linkURL.openStream();
+                Files.copy(in, Paths.get(fileName));
+                
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+               System.out.println(e1.getMessage());
+               statusText.setForeground(Color.red);
+            
+            } 
+           
+                System.out.println("finished downloading " + fileName);
+            downloadButton.setEnabled(true);
+            downloadButton.setBackground(Color.black);
+            urlTextField.setText("");
+            fileDestination.setText("");
+            statusText.setText(fileName + " was downloaded succesfully...");
+            statusText.setForeground(Color.green);
+            
+    }
+         }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // TODO Auto-generated method stub
+            
    
     
+    
+}  
 }
